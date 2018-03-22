@@ -18,13 +18,15 @@ function buttonCreation() {
         let gifTopic = topics[i];
         //create buttons
         button = $("<button>");
-        button.addClass("btn");
+        button.addClass("btn2");
         // Added a data-attribute
         button.attr("name", gifTopic);
         //console.log(button.attr("name"))
         button.text(gifTopic);
         // Addbutton to the buttons div
         $("#buttons").append(button);
+        //function to call api and get gifs on page
+        giphySearch();
     };
 };
 
@@ -39,8 +41,8 @@ $('#search-button').click(function(event){
     buttonCreation(); 
 });
 
-
-$('.btn').click(function () {
+function giphySearch () {
+$('.btn2').click(function () {
     clearGifs();
     gifSearch = ($(this).attr("name"));
     //console.log(gifSearch);
@@ -62,6 +64,7 @@ $.ajax({
         };
     });
 });
+};
 
 //show initial array buttons
 buttonCreation();
