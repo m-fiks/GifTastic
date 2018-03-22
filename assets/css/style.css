@@ -1,0 +1,16 @@
+.gifs-display{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.btn{
+    margin:4px;
+}
+
+img{
+    margin:4px;
+}
+
+.form{
+    background-color:rgb(176, 177, 245);
+}
