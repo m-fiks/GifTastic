@@ -26,8 +26,8 @@ function buttonCreation() {
         // Addbutton to the buttons div
         $("#buttons").append(button);
         //function to call api and get gifs on page
-        giphySearch();
     };
+    giphySearch();
 };
 
 //create button from search bar
@@ -47,10 +47,12 @@ $('.btn2').click(function () {
     gifSearch = ($(this).attr("name"));
     //console.log(gifSearch);
     let myURL = 'https://api.giphy.com/v1/gifs/search?q=' + gifSearch + '&api_key=MDOKk07DjXXDlXDATCMCt4HFeKhQGtq4&limit=10';
-$.ajax({
+
+    $.ajax({
     url: myURL,
     method: 'GET'
     }).then(function(response){
+        
         //search for gifs
         for (let i =0; i < 10; i++){
             imageURL = response.data[i].images.fixed_height_small.url;
