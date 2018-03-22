@@ -34,11 +34,17 @@ function buttonCreation() {
 $('#search-button').click(function(event){
     event.preventDefault();
     let newButton = $('#form').val();
-    topics.push(newButton);
-    //console.log(topics)
-    $('#form').val("");
-    $('#buttons').empty();
-    buttonCreation(); 
+
+    if (newButton.length > 0) {
+        console.log(newButton.length)
+        topics.push(newButton);
+        //console.log(topics)
+        $('#form').val("");
+        $('#buttons').empty();
+        buttonCreation(); 
+    } else if (newButton.length === 0){
+        alert('Please enter a term to search for!');
+    };
 });
 
 function giphySearch () {
