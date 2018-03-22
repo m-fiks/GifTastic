@@ -7,19 +7,20 @@ $(document).ready(function(){
 // https://api.giphy.com/v1/gifs/search?q=ryan+gosling&api_key=MDOKk07DjXXDlXDATCMCt4HFeKhQGtq4&limit=5
 let topics = ['pikachu', 'squirtle', 'bulbasaur', 'mew', 'eevee', 'psyduck', 'mewtwo', 'charizard', 'togepi','meowth'];
 let imageURL = "";
-let searchTerm = 'charizard';
 let button;
-let myURL = 'https://api.giphy.com/v1/gifs/search?q=' + searchTerm + '&api_key=MDOKk07DjXXDlXDATCMCt4HFeKhQGtq4&limit=5';
+let gifSearch;
+
+function clearGifs(){
+    $('#target').empty();
+};
 
 function buttonCreation() {
-
     for(let i = 0; i <topics.length; i++){
     let gifTopic = topics[i];
    
     //create buttons
     button = $("<button>");
     button.addClass("btn");
-
     // Added a data-attribute
     button.attr("name", gifTopic);
     //console.log(button.attr("name"))
@@ -28,30 +29,29 @@ function buttonCreation() {
     $("#buttons").append(button);
     };
 
-    $('.btn').click(function (){
-    let gifSearch = ($(this).attr("name"));
+    $('.btn').click(function () {
+    clearGifs();
+    gifSearch = ($(this).attr("name"));
     console.log(gifSearch);
-    })
+    let myURL = 'https://api.giphy.com/v1/gifs/search?q=' + gifSearch + '&api_key=MDOKk07DjXXDlXDATCMCt4HFeKhQGtq4&limit=10';
+    $.ajax({
+        url: myURL,
+        method: 'GET'
+        }).then(function(response){
+            //search for gifs
+            for (let i =0; i < 10; i++){
+                imageURL = response.data[i].images.fixed_height_small.url;
+                let rating = response.data[i].rating;
+                //splice out the s index=4
+                let addOn = 'http://';
+                let sliced = (imageURL.slice(8,imageURL.length));
+                let gifURL = addOn.concat(sliced);
+                //console.log(gifURL);
+                $('#target').append(`<div> <h4> Rating: ${rating} </h4> <img src='${gifURL}'> </img> </div>`)
+            };
+        });
+    });
 };
-
 buttonCreation();
 
-// $.ajax({
-//     url: myURL,
-//     method: 'GET'
-//     }).then(function(response){
-//         console.log(response)
-//         for (let i =0; i < 5; i++){
-//             imageURL = response.data[i].images.fixed_height.url;
-//             let rating = response.data[i].rating;
-//             //splice out the s index=4
-//             let addOn = 'http://';
-//             let sliced = (imageURL.slice(8,imageURL.length));
-//             let gifURL = addOn.concat(sliced);
-//             //console.log(gifURL);
-//             $('#target').append(`<div> <h4> Rating: ${rating} </h4> <img src='${gifURL}'> </img> </div>`)
-//     };
-// });
-
 });
-   
