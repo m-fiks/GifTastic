@@ -40,6 +40,7 @@ $('#search-button').click(function(event){
     let newButton = $('#form').val();
         if (newButton.length > 0) {
             //console.log(newButton.length)
+            //push to topics array
             topics.push(newButton);
             //console.log(topics)
             $('#form').val("");
@@ -49,10 +50,7 @@ $('#search-button').click(function(event){
             clearGifs();
             alert('Please enter a term to search for!')
         };
-
 });
-
-
 
 function giphySearch () {
 $('.btn2').click(function () {
@@ -72,19 +70,20 @@ $('.btn2').click(function () {
         //generate gifs
         for (let i =0; i < 10; i++){
             
+            //obtain still URL from response object
             imageURL = response.data[i].images.fixed_height_small_still.url;
-            //to animate
+            //obtain animated URL from response object
             gifURL =  response.data[i].images.fixed_height_small.url;
             rating = response.data[i].rating;
-            //splice out the s index=4
+            //to get 's' out of https:// - slice out everything after the 's', add 'http://' to beginning
             let addOn = 'http://';
             let sliced = (imageURL.slice(8,imageURL.length));
             let slicedGif = (gifURL.slice(8, gifURL.length));
             staticURL = addOn.concat(sliced);
             animateURL = addOn.concat(slicedGif);
             //console.log(animateURL);
+
             //append still gif and rating to DOM
-            //specify the height and width
             $('#target').append(`<div id="giphy"> <img src='${staticURL}' data-still=${staticURL} data-animate=${animateURL} data-state="still"> <p> Rating: ${rating} </p> </div>`)
             console.log(staticURL);
             };
@@ -98,9 +97,11 @@ $('.btn2').click(function () {
     let state = $(this).attr('data-state');
     if (state === 'still') {
         //console.log('here');
+        //change data-state attribute to animate
         $(this).attr('src', $(this).attr('data-animate'));
         $(this).attr('data-state','animate');
     } else if (state === 'animate'){
+        //change data-state attribute to still
         $(this).attr('src', $(this).attr('data-still'));
         $(this).attr('data-state','still');
     };
