@@ -31,24 +31,38 @@ function buttonCreation() {
     $('#searchy').hide();
 };
 
+function searchBarPress () {
+    newButton = $('#form').val();
+    if (newButton.length > 0) {
+        //console.log(newButton.length)
+        //push to topics array
+        topics.push(newButton);
+        //console.log(topics)
+        $('#form').val("");
+        $('#buttons').empty();
+        buttonCreation(); 
+    } else if (newButton.length === 0){
+        //clear loaded gifs
+        $('#target').empty();
+        $('#target').append(`<div id='searchy' style='color:red; font-size: 40px'>Please enter a term to search for!</div>`);
+    }
+};
+
 //create button from search bar
 $('#search-button').click((event) => {
     event.preventDefault();
-    newButton = $('#form').val();
-        if (newButton.length > 0) {
-            //console.log(newButton.length)
-            //push to topics array
-            topics.push(newButton);
-            //console.log(topics)
-            $('#form').val("");
-            $('#buttons').empty();
-            buttonCreation(); 
-        } else if (newButton.length === 0){
-            //clear loaded gifs
-            $('#target').empty();
-            $('#target').append(`<div id='searchy' style='color:red; font-size: 40px'>Please enter a term to search for!</div>`);
-        };
+    searchBarPress();
 });
+
+//let enter key function as search
+$('#form').keypress(function(e){
+    if (e.which == 13){
+        e.preventDefault();
+        searchBarPress();
+    };
+})
+
+
 
 function giphySearch () {
 $('.btn2').click(function() {
