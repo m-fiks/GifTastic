@@ -1,5 +1,5 @@
 'use strict';
-$(document).ready(function(){
+$(document).ready(() => {
 
 //variables
 let topics = ['pikachu', 'squirtle', 'bulbasaur', 'mew', 'eevee', 'psyduck', 'mewtwo', 'charizard', 'togepi','meowth'];
@@ -13,14 +13,9 @@ let gifTopic;
 let rating;
 let newButton;
 
-//clear loaded up gifs
-function clearGifs(){
-    $('#target').empty();
-};
-
 function buttonCreation() {
     //create buttons for beginning array
-    topics.map((elem)=> {
+    topics.map((elem) => {
             //create buttons
         button = $("<button>");
         button.addClass("btn2");
@@ -37,7 +32,7 @@ function buttonCreation() {
 };
 
 //create button from search bar
-$('#search-button').click(function(event){
+$('#search-button').click((event) => {
     event.preventDefault();
     newButton = $('#form').val();
         if (newButton.length > 0) {
@@ -49,22 +44,24 @@ $('#search-button').click(function(event){
             $('#buttons').empty();
             buttonCreation(); 
         } else if (newButton.length === 0){
-            clearGifs();
-            $('#target').append(`<div id='searchy'>Please enter a term to search for!</div>`)
+            //clear loaded gifs
+            $('#target').empty();
+            $('#target').append(`<div id='searchy' style='color:red; font-size: 40px'>Please enter a term to search for!</div>`);
         };
 });
 
 function giphySearch () {
-$('.btn2').click(function () {
+$('.btn2').click(function() {
     $('#searchy').hide();
-    clearGifs();
+    //clear loaded gifs
+    $('#target').empty();
     gifSearch = ($(this).attr("name"));
     //console.log(gifSearch);
     let myURL = 'https://api.giphy.com/v1/gifs/search?q=' + gifSearch + '&api_key=MDOKk07DjXXDlXDATCMCt4HFeKhQGtq4&limit=10';
 
     $.ajax({
-    url: myURL,
-    method: 'GET'
+        url: myURL,
+        method: 'GET'
     }).then(function(response){
         //console.log(response)
 
@@ -72,7 +69,6 @@ $('.btn2').click(function () {
 
         //generate gifs
         for (let i =0; i < 10; i++){
-            
             //obtain still URL from response object
             imageURL = response.data[i].images.fixed_height_small_still.url;
             //obtain animated URL from response object
@@ -88,7 +84,7 @@ $('.btn2').click(function () {
 
             //append still gif and rating to DOM
             $('#target').append(`<div id="giphy"> <img src='${staticURL}' data-still=${staticURL} data-animate=${animateURL} data-state="still"> <p> Rating: ${rating} </p> </div>`)
-            console.log(staticURL);
+            //console.log(staticURL);
             };
         });
     });
