@@ -9,7 +9,9 @@ let animateURL= "";
 let staticURL ="";
 let button;
 let gifSearch;
+let gifTopic;
 let rating;
+let newButton;
 
 //clear loaded up gifs
 function clearGifs(){
@@ -17,27 +19,27 @@ function clearGifs(){
 };
 
 function buttonCreation() {
-    //create buttons for array
-    for(let i = 0; i <topics.length; i++){
-        let gifTopic = topics[i];
-        //create buttons
+    //create buttons for beginning array
+    topics.map((elem)=> {
+            //create buttons
         button = $("<button>");
         button.addClass("btn2");
         // Added a data-attribute
-        button.attr("name", gifTopic);
+        button.attr("name", elem);
         //console.log(button.attr("name"))
-        button.text(gifTopic);
-        // Addbutton to the buttons div
+        button.text(elem);
+        // Add button to the buttons div
         $("#buttons").append(button);
-        //function to call api and get gifs on page
-    };
+    })
+       
+    //function to call api and get gifs on page
     giphySearch();
 };
 
 //create button from search bar
 $('#search-button').click(function(event){
     event.preventDefault();
-    let newButton = $('#form').val();
+    newButton = $('#form').val();
         if (newButton.length > 0) {
             //console.log(newButton.length)
             //push to topics array
