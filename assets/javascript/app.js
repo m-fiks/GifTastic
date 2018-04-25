@@ -1,5 +1,5 @@
 'use strict';
-$(document).ready(function(){
+$(document).ready(() => {
 
 //variables
 let topics = ['pikachu', 'squirtle', 'bulbasaur', 'mew', 'eevee', 'psyduck', 'mewtwo', 'charizard', 'togepi','meowth'];
@@ -9,59 +9,71 @@ let animateURL= "";
 let staticURL ="";
 let button;
 let gifSearch;
+let gifTopic;
 let rating;
-
-//clear loaded up gifs
-function clearGifs(){
-    $('#target').empty();
-};
+let newButton;
 
 function buttonCreation() {
-    //create buttons for array
-    for(let i = 0; i <topics.length; i++){
-        let gifTopic = topics[i];
-        //create buttons
+    //create buttons for beginning array
+    topics.map((elem) => {
+            //create buttons
         button = $("<button>");
         button.addClass("btn2");
         // Added a data-attribute
-        button.attr("name", gifTopic);
+        button.attr("name", elem);
         //console.log(button.attr("name"))
-        button.text(gifTopic);
-        // Addbutton to the buttons div
+        button.text(elem);
+        // Add button to the buttons div
         $("#buttons").append(button);
-        //function to call api and get gifs on page
-    };
+    }) 
+    //function to call api and get gifs on page
     giphySearch();
+    $('#searchy').hide();
+};
+
+function searchBarPress () {
+    newButton = $('#form').val();
+    if (newButton.length > 0) {
+        //console.log(newButton.length)
+        //push to topics array
+        topics.push(newButton);
+        //console.log(topics)
+        $('#form').val("");
+        $('#buttons').empty();
+        buttonCreation(); 
+    } else if (newButton.length === 0){
+        //clear loaded gifs
+        $('#target').empty();
+        $('#target').append(`<div id='searchy' style='color:red; font-size: 40px'>Please enter a term to search for!</div>`);
+    }
 };
 
 //create button from search bar
-$('#search-button').click(function(event){
+$('#search-button').click((event) => {
     event.preventDefault();
-    let newButton = $('#form').val();
-        if (newButton.length > 0) {
-            //console.log(newButton.length)
-            //push to topics array
-            topics.push(newButton);
-            //console.log(topics)
-            $('#form').val("");
-            $('#buttons').empty();
-            buttonCreation(); 
-        } else if (newButton.length === 0){
-            clearGifs();
-            alert('Please enter a term to search for!')
-        };
+    searchBarPress();
 });
 
+//let enter key function as search
+$('#form').keypress(function(e){
+    if (e.which == 13){
+        e.preventDefault();
+        searchBarPress();
+    };
+})
+
 function giphySearch () {
-$('.btn2').click(function () {
-    clearGifs();
+$('.btn2').click(function() {
+    $('#searchy').hide();
+    //clear loaded gifs
+    $('#target').empty();
     gifSearch = ($(this).attr("name"));
     //console.log(gifSearch);
     let myURL = 'https://api.giphy.com/v1/gifs/search?q=' + gifSearch + '&api_key=MDOKk07DjXXDlXDATCMCt4HFeKhQGtq4&limit=10';
 
     $.ajax({
-    url: myURL,
-    method: 'GET'
+        url: myURL,
+        method: 'GET'
     }).then(function(response){
         //console.log(response)
 
@@ -69,7 +81,6 @@ $('.btn2').click(function () {
 
         //generate gifs
         for (let i =0; i < 10; i++){
-            
             //obtain still URL from response object
             imageURL = response.data[i].images.fixed_height_small_still.url;
             //obtain animated URL from response object
@@ -85,7 +96,7 @@ $('.btn2').click(function () {
 
             //append still gif and rating to DOM
             $('#target').append(`<div id="giphy"> <img src='${staticURL}' data-still=${staticURL} data-animate=${animateURL} data-state="still"> <p> Rating: ${rating} </p> </div>`)
-            console.log(staticURL);
+            //console.log(staticURL);
             };
         });
     });
