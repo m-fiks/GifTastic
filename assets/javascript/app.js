@@ -30,10 +30,10 @@ function buttonCreation() {
         button.text(elem);
         // Add button to the buttons div
         $("#buttons").append(button);
-    })
-       
+    }) 
     //function to call api and get gifs on page
     giphySearch();
+    $('#searchy').hide();
 };
 
 //create button from search bar
@@ -50,12 +50,13 @@ $('#search-button').click(function(event){
             buttonCreation(); 
         } else if (newButton.length === 0){
             clearGifs();
-            alert('Please enter a term to search for!')
+            $('#target').append(`<div id='searchy'>Please enter a term to search for!</div>`)
         };
 });
 
 function giphySearch () {
 $('.btn2').click(function () {
+    $('#searchy').hide();
     clearGifs();
     gifSearch = ($(this).attr("name"));
     //console.log(gifSearch);
